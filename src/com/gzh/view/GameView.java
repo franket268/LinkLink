@@ -1,6 +1,10 @@
 package com.gzh.view;
 
+import java.util.List;
+
+
 import com.gzh.core.GameService;
+import com.gzh.util.ImageUtil;
 
 import Object.LinkInfo;
 import android.R;
@@ -9,70 +13,115 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.BitmapShader;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Point;
 import android.graphics.Shader;
 import android.util.AttributeSet;
 import android.view.View;
 
 public class GameView extends View {
-	private GameService gameService;
-	private Piece selectedPiece;
-	private LinkInfo linkInfo;//链接信息对象
-	private Paint paint;
-	private Bitmap selectImage;
-	
 
-	public GameView(Context context, AttributeSet attrs) {
+	// 游戏逻辑的实现类
+	private GameService gameService;
+	// 保存当前已经被选中的方块
+	private Piece selectedPiece;
+	// 连接信息对象
+	private LinkInfo linkInfo;
+	private Paint paint;
+	// 选中标识的图片对象
+	private Bitmap selectImage;
+
+	public GameView(Context context, AttributeSet attrs)
+	{
 		super(context, attrs);
-		this.paint=new Paint();
-		//使用位图平铺作为连接线条
-		this.paint.setShader(new BitmapShader(BitmapFactory.decodeResource(context.getResources(), R.drawable.heart),Shader.TileMode.REPEAT,Shader.TileMode.REPEAT));
-		//设置线条粗细
-		this.paint.setStrokeWidth(9);
-		this.selectImage=ImageUtil.getSelectImage(context);
+		this.paint = new Paint();
+		// 设置连接线的颜色
+		this.paint.setColor(Color.RED);
+		// 设置连接线的粗细
+		this.paint.setStrokeWidth(3);
+		this.selectImage = ImageUtil.getSelectImage(context);
 	}
-	
-	public void setLinkInfo(LinkInfo linkInfo){
-		this.linkInfo=linkInfo;
+
+	public void setLinkInfo(LinkInfo linkInfo)
+	{
+		this.linkInfo = linkInfo;
 	}
-	public void setGameService(GameService gameService){
-		this.gameService=gameService;
+
+	public void setGameService(GameService gameService)
+	{
+		this.gameService = gameService;
 	}
-	
+
 	@Override
-	public void onDraw(Canvas canvas)
+	protected void onDraw(Canvas canvas)
 	{
 		super.onDraw(canvas);
-		if(this.gameService==null){
+		if (this.gameService == null)
 			return;
-		}
-		Piece[][] pieces=gameService.getPieces();
-		if(pieces!=null)
+		Piece[][] pieces = gameService.getPieces();
+		if (pieces != null)
 		{
-			for(int i=0;i<pieces.length;i++)
+			// 遍历pieces二维数组
+			for (int i = 0; i < pieces.length; i++)
 			{
-				for(int j=0;j<pieces[i].length;j++)
+				for (int j = 0; j < pieces[i].length; j++)
 				{
-					//如果二位数组不为空，即有方块，讲这个方块的图片画出来
-					if(pieces[i][j]!=null){
-						Piece piece=pieces[i][j];
-						//根据方块的左上角X,Y坐标绘制方块
-						canvas.drawBitmap(piece.getImage().getImage(),piece.getBeginX(),piece.getBeginY() ,null);
+					// 如果二维数组中该元素不为空（即有方块），将这个方块的图片画出来
+					if (pieces[i][j] != null)
+					{
+						// 得到这个Piece对象
+						Piece piece = pieces[i][j];
+						// 根据方块左上角X、Y座标绘制方块
+						canvas.drawBitmap(piece.getImage().getImage(),
+							piece.getBeginX(), piece.getBeginY(), null);
 					}
 				}
 			}
-				
 		}
-		
-		//如果当前对象有linkInfo对象，即链接信息
-		if(this.linkInfo)!=null)
+		// 如果当前对象中有linkInfo对象, 即连接信息
+		if (this.linkInfo != null)
 		{
-			//绘制连接线
-			
+			// 绘制连接线
+			drawLine(this.linkInfo, canvas);
+			// 处理完后清空linkInfo对象
+			this.linkInfo = null;
 		}
-		
-		
+		// 画选中标识的图片
+		if (this.selectedPiece != null)
+		{
+			canvas.drawBitmap(this.selectImage, this.selectedPiece.getBeginX(),
+				this.selectedPiece.getBeginY(), null);
+		}
 	}
 
+	// 根据LinkInfo绘制连接线的方法。
+	private void drawLine(LinkInfo linkInfo, Canvas canvas)
+	{
+		// 获取LinkInfo中封装的所有连接点
+		List<Point> points = linkInfo.getLinkPoints();
+		// 依次遍历linkInfo中的每个连接点
+		for (int i = 0; i < points.size() - 1; i++)
+		{
+			// 获取当前连接点与下一个连接点
+			Point currentPoint = points.get(i);
+			Point nextPoint = points.get(i + 1);
+			// 绘制连线
+			canvas.drawLine(currentPoint.x , currentPoint.y,
+				nextPoint.x, nextPoint.y, this.paint);
+		}
+	}
 
+	// 设置当前选中方块的方法
+	public void setSelectedPiece(Piece piece)
+	{
+		this.selectedPiece = piece;
+	}
+
+	// 开始游戏方法
+	public void startGame()
+	{
+		this.gameService.start();
+		this.postInvalidate();
+	}
 }
