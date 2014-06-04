@@ -4,9 +4,9 @@ import java.util.List;
 
 
 import com.gzh.core.GameService;
+import com.gzh.object.LinkInfo;
 import com.gzh.util.ImageUtil;
 
-import Object.LinkInfo;
 import android.R;
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -94,7 +94,7 @@ public class GameView extends View {
 				this.selectedPiece.getBeginY(), null);
 		}
 	}
-
+ 
 	// 根据LinkInfo绘制连接线的方法。
 	private void drawLine(LinkInfo linkInfo, Canvas canvas)
 	{

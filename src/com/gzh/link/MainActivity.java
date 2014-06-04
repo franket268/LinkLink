@@ -2,8 +2,10 @@ package com.gzh.link;
 
 import java.util.Timer;
 import java.util.TimerTask;
-import com.example.link.R;
+
+import com.gzh.R;
 import com.gzh.core.GameService;
+import com.gzh.core.GameServiceImpl;
 import com.gzh.object.GameConf;
 import com.gzh.object.LinkInfo;
 import com.gzh.view.GameView;

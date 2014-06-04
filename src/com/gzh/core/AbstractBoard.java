@@ -3,7 +3,9 @@ package com.gzh.core;
 import java.util.List;
 
 import com.gzh.object.GameConf;
+import com.gzh.util.ImageUtil;
 import com.gzh.view.Piece;
+import com.gzh.view.PieceImage;
 
 //游戏区域的抽象类
 

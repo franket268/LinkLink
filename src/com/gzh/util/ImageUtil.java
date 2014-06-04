@@ -6,8 +6,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
-
-import com.example.link.R;
+import com.gzh.R;
 import com.gzh.view.PieceImage;
 
 
