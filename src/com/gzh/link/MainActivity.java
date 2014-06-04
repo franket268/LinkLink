@@ -39,6 +39,7 @@ public class MainActivity extends Activity {
 		private GameView gameView;
 		// 开始按钮
 		private Button startButton;
+
 		// 记录剩余时间的TextView
 		private TextView timeTextView;
 		// 失败后弹出的对话框
@@ -48,9 +49,9 @@ public class MainActivity extends Activity {
 		// 定时器
 		private Timer timer = new Timer();
 		// 记录游戏的剩余时间
-		private int gameTime;
+		private int gameTime=100;
 		// 记录是否处于游戏状态
-		private boolean isPlaying;
+		private boolean isPlaying=false;
 		// 振动处理类
 		private Vibrator vibrator;
 		// 记录已经选中的方块
@@ -70,6 +71,7 @@ public class MainActivity extends Activity {
 							stopTimer();
 							// 更改游戏的状态
 							isPlaying = false;
+							startButton.setBackgroundResource(R.drawable.play);
 							lostDialog.show();
 							return;
 						}
@@ -106,8 +108,15 @@ public class MainActivity extends Activity {
 			{
 				@Override
 				public void onClick(View source)
-				{
-					startGame(GameConf.DEFAULT_TIME);
+				{ 
+					if(isPlaying==false){
+						startGame(gameTime);
+					}
+					else{
+						pauseGame();
+					}
+					
+					
 				}
 			});
 			// 为游戏区域的触碰事件绑定监听器
@@ -115,13 +124,16 @@ public class MainActivity extends Activity {
 			{
 				public boolean onTouch(View view, MotionEvent e)
 				{
-					if (e.getAction() == MotionEvent.ACTION_DOWN)
+					if(isPlaying==true)
 					{
-						gameViewTouchDown(e);
-					}
-					if (e.getAction() == MotionEvent.ACTION_UP)
-					{
-						gameViewTouchUp(e);
+						if (e.getAction() == MotionEvent.ACTION_DOWN)
+						{
+							gameViewTouchDown(e);
+						}
+						if (e.getAction() == MotionEvent.ACTION_UP)
+						{
+							gameViewTouchUp(e);
+						}
 					}
 					return true;
 				}
@@ -142,6 +154,7 @@ public class MainActivity extends Activity {
 				{
 					public void onClick(DialogInterface dialog, int which)
 					{
+						
 						startGame(GameConf.DEFAULT_TIME);
 					}
 				});
@@ -219,20 +232,26 @@ public class MainActivity extends Activity {
 		// 以gameTime作为剩余时间开始或恢复游戏
 		private void startGame(int gameTime)
 		{
-			// 如果之前的timer还未取消，取消timer
-			if (this.timer != null)
-			{
-				stopTimer();
-			}
+			startButton.setBackgroundResource(R.drawable.pause);
+//			// 如果之前的timer还未取消，取消timer
+//			if (this.timer != null)
+//			{
+//				stopTimer();
+//			}
 			// 重新设置游戏时间
 			this.gameTime = gameTime;		
-			// 如果游戏剩余时间与总游戏时间相等，即为重新开始新游戏
-			if(gameTime == GameConf.DEFAULT_TIME)
+			// 如果游戏剩余时间小于总游戏时间相等，即为继续游戏
+			if(gameTime < GameConf.DEFAULT_TIME)
 			{
-				// 开始新的游戏游戏
-				gameView.startGame();
+				isPlaying=true;
+				
 			}
-			isPlaying = true;	
+			else{
+				// 开始新的游戏游戏
+				gameTime=100;
+				gameView.startGame();
+				isPlaying = true;
+			}
 			this.timer = new Timer();
 			// 启动计时器 ， 每隔1秒发送一次消息
 			this.timer.schedule(new TimerTask()
@@ -244,7 +263,17 @@ public class MainActivity extends Activity {
 			}, 0, 1000);
 			// 将选中方块设为null。
 			this.selected = null;
+			
 		}	
+		
+		//暂停游戏
+		public void pauseGame(){
+			startButton.setBackgroundResource(R.drawable.play);
+			isPlaying=false;
+			stopTimer();
+		
+		}
+		
 
 		/**
 		 * 成功连接后处理
@@ -292,6 +321,10 @@ public class MainActivity extends Activity {
 		{
 			// 停止定时器
 			this.timer.cancel();
-			this.timer = null;
+		//	this.timer = null;
+		}
+		private void startTimer()
+		{
+			
 		}
 	}

@@ -45,10 +45,10 @@ public final class R {
         public static final int p_7=0x7f020014;
         public static final int p_8=0x7f020015;
         public static final int p_9=0x7f020016;
-        public static final int room=0x7f020017;
-        public static final int selected=0x7f020018;
-        public static final int start=0x7f020019;
-        public static final int start_down=0x7f02001a;
+        public static final int pause=0x7f020017;
+        public static final int play=0x7f020018;
+        public static final int room=0x7f020019;
+        public static final int selected=0x7f02001a;
         public static final int success=0x7f02001b;
     }
     public static final class id {

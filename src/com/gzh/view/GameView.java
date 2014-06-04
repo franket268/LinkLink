@@ -32,6 +32,7 @@ public class GameView extends View {
 	// 选中标识的图片对象
 	private Bitmap selectImage;
 
+
 	public GameView(Context context, AttributeSet attrs)
 	{
 		super(context, attrs);

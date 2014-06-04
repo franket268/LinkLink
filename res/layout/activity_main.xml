@@ -10,7 +10,7 @@
        android:layout_width="fill_parent" 
        android:layout_height="fill_parent" /> 
  <!--  水平排列的LinearLayout   --> 
-<LinearLayout
+<RelativeLayout 
      android:layout_width="fill_parent" 
      android:layout_height="fill_parent" 
      android:orientation="horizontal" 
@@ -18,20 +18,31 @@
      android:background="#1e72bb" 
      android:gravity="center">
  <!--  控制游戏开始的按钮  --> 
-  <Button 
+
+  <Button
       android:id="@+id/startButton"
-       android:layout_width="wrap_content" 
-       android:layout_height="wrap_content" 
-       android:background="@drawable/button_selector" /> 
- <!--  显示游戏剩余时间的文本框  --> 
-  <TextView 
-      android:id="@+id/timeText" 
-      android:layout_width="wrap_content" 
-      android:layout_height="wrap_content" 
-      android:gravity="center" 
-      android:textSize="20dip" 
-      android:width="150px" 
-      android:textColor="#ff9" /> 
-  </LinearLayout>
+      android:layout_width="44dp"
+      android:layout_height="39dp"
+      android:layout_marginLeft="30dp"
+	 android:background="@drawable/play" />
+
+
+
+ <!--  显示游戏剩余时间的文本框  -->
+
+  <TextView
+      android:id="@+id/timeText"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_alignBaseline="@+id/startButton"
+      android:layout_alignBottom="@+id/startButton"
+      android:layout_marginLeft="40dp"
+      android:layout_toRightOf="@+id/startButton"
+      android:gravity="center"
+      android:textColor="#ff9"
+      android:textSize="20dip"
+      android:width="150px" />
+ 
+  </RelativeLayout >
   </RelativeLayout>
 
