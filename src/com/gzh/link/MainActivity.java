@@ -15,6 +15,8 @@ import android.support.v4.app.Fragment;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.media.MediaPlayer;
+import android.media.MediaPlayer.OnCompletionListener;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -56,6 +58,7 @@ public class MainActivity extends Activity {
 		private Vibrator vibrator;
 		// 记录已经选中的方块
 		private Piece selected = null;
+		private MediaPlayer mPlayer;
 		private Handler handler = new Handler()
 		{
 			public void handleMessage(Message msg)
@@ -99,10 +102,23 @@ public class MainActivity extends Activity {
 			timeTextView = (TextView) findViewById(R.id.timeText);
 			// 获取开始按钮
 			startButton = (Button) this.findViewById(R.id.startButton);
+			
 			// 获取振动器
 			vibrator = (Vibrator) getSystemService(VIBRATOR_SERVICE);
 			gameService = new GameServiceImpl(this.config);
 			gameView.setGameService(gameService);
+			//播发音乐
+			mPlayer=MediaPlayer.create(this, R.raw.song);
+			mPlayer.start();
+			mPlayer.setOnCompletionListener(new OnCompletionListener() {
+				
+				@Override
+				public void onCompletion(MediaPlayer mp) {
+					// TODO Auto-generated method stub
+					mPlayer.start();
+				}
+			});
+			
 			// 为开始按钮的单击事件绑定事件监听器
 			startButton.setOnClickListener(new View.OnClickListener()
 			{
@@ -164,6 +180,7 @@ public class MainActivity extends Activity {
 		{
 			// 暂停游戏
 			stopTimer();
+			mPlayer.stop();
 			super.onPause();
 		}
 		@Override
