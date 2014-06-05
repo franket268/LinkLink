@@ -2,7 +2,6 @@ package com.gzh.link;
 
 import java.util.Timer;
 import java.util.TimerTask;
-
 import com.gzh.R;
 import com.gzh.core.GameService;
 import com.gzh.core.GameServiceImpl;
@@ -23,6 +22,7 @@ import android.os.Message;
 import android.os.Vibrator;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
@@ -290,6 +290,38 @@ public class MainActivity extends Activity {
 			stopTimer();
 		
 		}
+		
+		/**
+		 * 增加菜单
+		 */
+		@Override
+		public boolean onCreateOptionsMenu(Menu menu)
+		{
+			MenuInflater inflater = getMenuInflater();
+			inflater.inflate(R.menu.menu_item, menu);
+			return true;
+		}
+		
+		/**
+		 * 处理菜单事件
+		 */
+		@Override
+		public boolean onOptionsItemSelected(MenuItem item)
+		{
+			if (item.getItemId()==R.id.restart)
+			{
+				gameTime=100;
+				gameView.startGame();
+				isPlaying = true;
+			}
+			else if(item.getItemId()==R.id.quit)
+			{
+				this.finish();
+			}
+			return true;
+		}
+		
+		
 		
 
 		/**

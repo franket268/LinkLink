@@ -54,6 +54,8 @@ public final class R {
     public static final class id {
         public static final int action_settings=0x7f080003;
         public static final int gameView=0x7f080000;
+        public static final int quit=0x7f080005;
+        public static final int restart=0x7f080004;
         public static final int startButton=0x7f080001;
         public static final int timeText=0x7f080002;
     }
@@ -62,6 +64,7 @@ public final class R {
     }
     public static final class menu {
         public static final int main=0x7f070000;
+        public static final int menu_item=0x7f070001;
     }
     public static final class raw {
         public static final int song=0x7f040000;
